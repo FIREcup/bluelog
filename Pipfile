@@ -1,0 +1,20 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+verify_ssl = true
+
+[dev-packages]
+faker = "*"
+
+[packages]
+flask = "*"
+bootstrap-flask = "*"
+flask-sqlalchemy = "*"
+flask-moment = "*"
+flask-ckeditor = "*"
+flask-mail = "*"
+python-dotenv = "*"
+flask-wtf = "*"
+
+[requires]
+python_version = "3.5"
