@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, BooleanField
-from wtforms.validators import DataRequired, Length
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, ValidationError, HiddenField, SelectField, TextAreaField
+from wtforms.validators import DataRequired, Length, URL, Optional, Email
 from flask_ckeditor import CKEditorField
 
 class LoginForm(FlaskForm):
@@ -43,7 +43,7 @@ class CommentForm(FlaskForm):
     author = StringField('Name', validators=[DataRequired(), Length(1, 30)])
     email = StringField('Email', validators=[DataRequired(), Email(), Length(1, 254)])
     site = StringField('Site', validators=[Optional(), URL(), Length(0, 255)])
-    body = StringField('Comment', validators=[DataRequired()])
+    body = TextAreaField('Comment', validators=[DataRequired()])
     submit = SubmitField()
 
 
