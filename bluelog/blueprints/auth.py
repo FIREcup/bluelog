@@ -5,6 +5,12 @@ from flask_login import login_user
 auth_bp = Blueprint('auth', __name__)
 
 
+@auth_bp.before_request
+@login_required
+def login_protect():
+    pass
+
+
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
@@ -29,5 +35,8 @@ def login():
 
 
 @auth_bp.route('/logout')
+@login_required # 用于视图保护
 def logout():
-    if current_user.
+    logout_user()
+    flash('Logout success.', 'info')
+    return redirect_back()
