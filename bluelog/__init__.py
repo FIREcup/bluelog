@@ -6,7 +6,7 @@ from flask_ckeditor import CKEditor
 from flask_mail import Mail
 from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
-from .extensions import bootstrap, mail, moment, db, ckeditor, bootstrap
+from .extensions import bootstrap, mail, moment, db, ckeditor, bootstrap, login_manager
 from .settings import config
 
 
@@ -41,6 +41,7 @@ def register_extensions(app):
     ckeditor.init_app(app)
     mail.init_app(app)
     moment.init_app(app)
+    login_manager.init_app(app)
 
 def register_blueprints(app):
     app.register_blueprint(blog_bp)
