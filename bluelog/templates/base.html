@@ -22,8 +22,32 @@
                         <span class='navbar-toggler-icon'></span>
                     </button>
                     <div class='collapse navbar-collapse' id='navbarColor01'>
-                       {{ render_nav_item('blog.index', 'Home') }}
-                       {{ render_nav_item('blog.about', 'About') }}
+                        <ul class='navbar-nav mr-auto'>
+                            {{ render_nav_item('blog.index', 'Home') }}
+                            {{ render_nav_item('blog.about', 'About') }}
+                        </ul>
+                        
+                        <ul class='nav navbar-nav navbar-right'>
+                            {% if current_user.is_authenticated %}
+                                <li class='nav-item dropdown'>
+                                    <a href='#' class='nav-link dropdown-toggle' data-toggle='dropdown' role='button' aria-haspopup='true' aria-expanded='false'>
+                                        New<span class='caret'></span>
+                                    </a>
+                                    <div class='dropdown-menu' aria-lableledby='navbarDropdown'>
+                                        <a class='dropdown-item' href="{{ url_for('admin.new_post') }}">Post</a>
+                                        <a class='dropdown-item' href="{{ url_for('admin.manager_category') }}">Category</a>
+                                        <a class='dropdown-item' href="{{ url_for('admin.manager_comment') }}">
+                                            Comment
+                                            {% if unread_comments %}
+                                                <span class='badge badge-success'>{{ unread_comments }}</span>
+                                            {% endif %}
+                                        </a>
+                                        <a class='dropdown-item' href="{{ url_for('admin.manage_link') }}">Link</a>
+                                    </div>
+                                </li>
+                                {{ render_nav_item('admin.settings', 'Settings') }}
+                            {% endif %}
+                        </ul>
                     </div>
                 </div>
             </nav>
