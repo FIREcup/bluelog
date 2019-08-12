@@ -17,6 +17,7 @@ python-dotenv = "*"
 flask-wtf = "*"
 unidecode = "*"
 flask-login = "*"
+faker = "*"
 
 [requires]
 python_version = "3.5"

@@ -90,7 +90,7 @@
             {% if comments %}
                 {{ render_pagination(pagination, fragment='#comments') }}
             {% endif %}
-            {% if requests.args.get('reply') %}
+            {% if request.args.get('reply') %}
                 <div class='alert aler-dark'>
                     Reply to <strong>{{ request.args.get('author') }}</strong>:
                     <a class='float-right' href="{{ url_for('.show_post', post_id=post.id) }}">Cancel</a>

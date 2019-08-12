@@ -8,6 +8,7 @@ from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
 from .extensions import bootstrap, mail, moment, db, ckeditor, bootstrap, login_manager, csrf
 from .settings import config
+from .models import Admin, Category, Post, Link
 
 
 from .blueprints.admin import admin_bp
@@ -96,7 +97,7 @@ def register_commands(app):
     @click.option('--comment', default=500, help='Quantity of comments, default is 500.')
     def forge(category, post, comment):
         """Generate fake data"""
-        from .fakes import fake_admin, fake_categories, fake_posts, fake_comment, fake_links
+        from .fakes import fake_admin, fake_categories, fake_posts, fake_comments, fake_links
 
         db.drop_all()
         db.create_all()
@@ -142,7 +143,7 @@ def register_commands(app):
                     about = 'Anything about you.'
                     )
             admin.set_password(password)
-            db.session.add(amin)
+            db.session.add(admin)
 
         category = Category.query.first()
         if category is None:

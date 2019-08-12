@@ -11,7 +11,7 @@ mail = Mail()
 ckeditor = CKEditor()
 moment = Moment()
 db = SQLAlchemy()
-login_manager = LoginManger()
+login_manager = LoginManager()
 csrf = CSRFProtect()
 
 @login_manager.user_loader

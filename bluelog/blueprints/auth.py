@@ -1,5 +1,5 @@
 from flask import Blueprint
-from flask_login import login_user
+from flask_login import login_user, login_required, current_user
 
 
 auth_bp = Blueprint('auth', __name__)
@@ -14,6 +14,7 @@ def login_protect():
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
+        print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
         return redirect(url_for('blog.index'))
 
     form = LoginForm()

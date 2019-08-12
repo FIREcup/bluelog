@@ -44,7 +44,7 @@ def fake_posts(count=50):
     db.session.commit()
 
 
-def fake_comment(count=500):
+def fake_comments(count=500):
     for i in range(count):
         comment = Comment(
             author = fake.name(),
