@@ -6,7 +6,7 @@
             <meta charset='utf-8'>
             <title>{% block title %}bluelog{% endblock %}</title>
             <meta name='viewport' content='width=device-width, initial-scale=1'>
-            <link rel='stylesheet' href="{{ url_for('static', filename='css/bootstrap.min.css') }}"
+            <link rel='stylesheet' href="{{ url_for('static', filename='css/{}.min.css'.format(request.cookies.get('theme', 'perfect_blue'))) }}"
                                    style='text/css'>
             <link rel='stylesheet' href="{{ url_for('static', filename='css/style.css') }}" 
                                    style='text/css'>

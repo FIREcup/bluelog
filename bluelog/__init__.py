@@ -115,3 +115,39 @@ def register_commands(app):
         fake_links()
 
         click.echo('Done')
+
+    @app.cli.command()
+    @click.option('--username', prompt=True, help='The username used to login.')
+    @click.option('--password', prompt=True, hide_input=True,
+            confirmation_prompt=True, help='The password used to login.')
+    def init(username, password):
+        """Building Bluelog, just for you"""
+        click.echo('Initializing the database...')
+        db.create_all()
+
+        admin = Admin.query.first()
+        if admin: # 如果已经存在admin用户，则更新用户名和密码
+            click.echo('The administrator already exists, updating...')
+            admin.username = username
+            admin.set_password(password)
+        else: # 否则创建admin用户
+            click.echo('Creating the temporary administrator account...')
+            admin = Admin(
+                    username = username,
+                    blog_title = 'Bluelog',
+                    blog_sub_title = 'No, I\'m the real thing.',
+                    name = 'Admin',
+                    about = 'Anything about you.'
+                    )
+            admin.set_password(password)
+            db.session.add(amin)
+
+        category = Category.query.first()
+        if category is None:
+            click.echo('Creating the default category...')
+            category = Category(name='Default')
+            db.session.add(category)
+
+        db.session.commit()
+        click.echo('Done.')
+
