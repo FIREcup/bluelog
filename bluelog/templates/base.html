@@ -35,8 +35,8 @@
                                     </a>
                                     <div class='dropdown-menu' aria-lableledby='navbarDropdown'>
                                         <a class='dropdown-item' href="{{ url_for('admin.new_post') }}">Post</a>
-                                        <a class='dropdown-item' href="{{ url_for('admin.manager_category') }}">Category</a>
-                                        <a class='dropdown-item' href="{{ url_for('admin.manager_comment') }}">
+                                        <a class='dropdown-item' href="{{ url_for('admin.manage_category') }}">Category</a>
+                                        <a class='dropdown-item' href="{{ url_for('admin.manage_comment') }}">
                                             Comment
                                             {% if unread_comments %}
                                                 <span class='badge badge-success'>{{ unread_comments }}</span>

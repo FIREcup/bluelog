@@ -1,14 +1,17 @@
-from flask import Blueprint
+from flask import Blueprint, render_template, flash
 from flask_login import login_user, login_required, current_user
+from ..forms import LoginForm
+from ..models import Admin
+from ..utils import redirect_back
 
 
 auth_bp = Blueprint('auth', __name__)
 
 
-@auth_bp.before_request
-@login_required
-def login_protect():
-    pass
+#@auth_bp.before_request
+#@login_required
+#def login_protect():
+#    pass
 
 
 @auth_bp.route('/login', methods=['GET', 'POST'])
@@ -23,6 +26,7 @@ def login():
         remember = form.remember.data
         admin = Admin.query.first()
         if admin:
+            print('password:{}, password_hash:{}'.format(password, admin.password_hash))
             if username == admin.username and admin.validate_password(password):
                 login_user(admin, remember)
                 flash('Welcome back', 'info')

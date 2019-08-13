@@ -8,7 +8,8 @@ from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
 from .extensions import bootstrap, mail, moment, db, ckeditor, bootstrap, login_manager, csrf
 from .settings import config
-from .models import Admin, Category, Post, Link, Comments
+from .models import Admin, Category, Post, Link, Comment
+from flask_login import current_user
 
 
 from .blueprints.admin import admin_bp
@@ -126,13 +127,14 @@ def register_commands(app):
 
     @app.cli.command()
     @click.option('--username', prompt=True, help='The username used to login.')
-    @click.option('--password', prompt=True, hide_input=True,
-            confirmation_prompt=True, help='The password used to login.')
+    #@click.option('--password', prompt=True, hide_input=True,
+    #        confirmation_prompt=True, help='The password used to login.')
+    @click.password_option()
     def init(username, password):
         """Building Bluelog, just for you"""
         click.echo('Initializing the database...')
         db.create_all()
-
+        print('password:{}'.format(password))
         admin = Admin.query.first()
         if admin: # 如果已经存在admin用户，则更新用户名和密码
             click.echo('The administrator already exists, updating...')
