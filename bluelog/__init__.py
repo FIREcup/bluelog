@@ -8,7 +8,7 @@ from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
 from .extensions import bootstrap, mail, moment, db, ckeditor, bootstrap, login_manager, csrf
 from .settings import config
-from .models import Admin, Category, Post, Link
+from .models import Admin, Category, Post, Link, Comments
 
 
 from .blueprints.admin import admin_bp
@@ -57,7 +57,12 @@ def register_template_context(app):
         admin = Admin.query.first()
         categories = Category.query.order_by(Category.name).all()
         links = Link.query.order_by(Link.name).all()
-        return dict(admin=admin, categories=categories, links=links)
+
+        if current_user.is_authenticated:
+            unread_comments = Comment.query.filter_by(reviewed=False).count()
+        else:
+            unread_comments = None
+        return dict(admin=admin, categories=categories, links=links, unread_comments=unread_comments)
 
 
 def register_shell_context(app):
