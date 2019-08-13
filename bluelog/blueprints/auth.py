@@ -14,11 +14,10 @@ def login_protect():
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
-        print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
         return redirect(url_for('blog.index'))
 
     form = LoginForm()
-    if form.validdate_on_submit():
+    if form.validate_on_submit():
         username = form.username.data
         password = form.password.data
         remember = form.remember.data
