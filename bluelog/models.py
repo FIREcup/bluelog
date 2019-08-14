@@ -15,7 +15,6 @@ class Admin(db.Model, UserMixin):
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
-        print('~~~~~~~~~~~~~~~~~~~~~~~~~~~')
         print('self.password_hash: {}'.format(self.password_hash))
 
     def validate_password(self, password):

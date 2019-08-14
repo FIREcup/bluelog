@@ -2,6 +2,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, BooleanField, ValidationError, HiddenField, SelectField, TextAreaField
 from wtforms.validators import DataRequired, Length, URL, Optional, Email
 from flask_ckeditor import CKEditorField
+from .models import Category
 
 class LoginForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired(), Length(1, 20)])

@@ -15,16 +15,16 @@
 	</li>
 	<li class='nav-item'>
             <a class="nav-link {% if request.args.get('filter', 'all') == 'all' %}active{% endif %}" 
-	        href="{{ url_for('admin.manage_comment)', filter='all' }}">All</a>
+	        href="{{ url_for('admin.manage_comment', filter='all') }}">All</a>
 	</li>
 	<li class='nav-item'>
             <a class="nav-link {% if request.args.get('filter', 'all') == 'unread' %}active{% endif %}" 
-	        href="{{ url_for('admin.manage_comment)', filter='unread' }}">Unread {% if unread_comments %}
+	        href="{{ url_for('admin.manage_comment', filter='unread') }}">Unread {% if unread_comments %}
 		<span class='badge badge-success'>{{ unread_comments }}</span>{% endif %}</a>
 	</li>
 	<li class='nav-item'>
             <a class="nav-link {% if request.args.get('filter') == 'admin' %}active{% endif %}" 
-	        href="{{ url_for('admin.manage_comment)', filter='admin' }}">From Admin</a>
+	        href="{{ url_for('admin.manage_comment', filter='admin') }}">From Admin</a>
 	</li>
     </ul>
     </div>
@@ -50,7 +50,7 @@
 			        {{ comment.site }}
 			    </a><br />
 			{% endif %}
-			<a href="mailto:{{ comment.email }}">{{ comeent.email }}</a>
+			<a href="mailto:{{ comment.email }}">{{ comment.email }}</a>
 
 			{% if comment.from_admin %}
 			    <span class='badge badge-primary'>Author</span>

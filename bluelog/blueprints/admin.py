@@ -1,5 +1,8 @@
-from flask import Blueprint
+from flask import Blueprint, render_template, request, current_app
 from flask_login import login_required
+from ..forms import PostForm
+from ..models import Comment
+
 
 
 admin_bp = Blueprint('admin', __name__)
@@ -100,3 +103,55 @@ def approve_comment(comment_id):
     db.session.commit()
     flash('Comment published.', 'success')
     return redirect_back()
+
+
+@admin_bp.route('/category/delete/<int:category_id>', methods=['POST'])
+@login_required
+def delete_category(category_id):
+    category = Category.query.get_or_404(category_id)
+    if category.id == 1:
+        flash('You can not delete the default category.', 'warning')
+        return redirect(url_for('blog.index'))
+    category.delete()
+    flash('Category deleted', 'success')
+    return redirect(url_for('.manage_category'))
+
+
+@admin_bp.route('/category/manage')
+@login_required
+def manage_category():
+    return render_tempalte('admin/manage_category.html')
+
+@admin_bp.route('/manage/link')
+@login_required
+def manage_link():
+    return render_template('admin/manage_link.html')
+
+
+@admin_bp.route('/settings', methods=['GET', 'POST'])
+@login_required
+def settings():
+    form = SettingForm()
+    if form.validate_on_submit():
+        current_user.name = form.name.data
+        current_user.blog_title = form.blog_title.data
+        current_user.blog_sub_title = form.blog_sub_title.data
+        current_user.about = form.about.data
+        db.session.commit()
+        flash('Setting updated.', 'success')
+        return redirect(url_for('blog.index'))
+    form.name.data = current_user.name
+    form.blog_title.data = current_user.blog_title
+    form.blog_sub_title.data = current_user.blog_sub_title
+    form.about.data = current_user.about
+    return render_template('admin/settings.html', form=form)
+
+
+@admin_bp.route('/comment/delete/<int:comment_id>', methods=['POST'])
+@login_required
+def delete_comment(comment_id):
+    comment = Comment.query.get_or_404(comment_id)
+    db.session.delete(comment)
+    db.session.commit()
+    flash('Comment deleted.', 'success')
+    return reidrect_back()
