@@ -65,15 +65,15 @@
 				<input type='hidden' name='csrf_token' value="{{ csrf_token() }}" />
 				<button type='submit' class='btn btn-success btn-sm'>Approve</button>
 			    </form>
-			{% endif %}
-			<a class='btn btn-info btn-sm' href="{{ url_for('blog.show_post', post_id=comment.post.id) }}">Post</a>
-			<form class='inline' method='post' 
-			    action="{{ url_for('.delete_comment', comment_id=comment.id, next=request.full_path) }}">
-			    <input type='hidden' name='csrf_token' value="{{ csrf_token() }}" />
-			    <button type='submit' class='btn btn-danger btn-sm' 
-			        onclick="return confirm(Are you sure?);">Delete
-			    </button>
-			</form>
+			    {% endif %}
+			    <a class='btn btn-info btn-sm' href="{{ url_for('blog.show_post', post_id=comment.post.id) }}">Post</a>
+			    <form class='inline' method='post' 
+			        action="{{ url_for('.delete_comment', comment_id=comment.id, next=request.full_path) }}">
+			        <input type='hidden' name='csrf_token' value="{{ csrf_token() }}" />
+			        <button type='submit' class='btn btn-danger btn-sm' 
+			            onclick="return confirm(Are you sure?);">Delete
+			        </button>
+			    </form>
 		    </td>
 		</tr>
 	    {% endfor %}

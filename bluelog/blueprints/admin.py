@@ -90,3 +90,13 @@ def manage_comment():
     pagination = filtered_comments.order_by(Comment.timestamp.desc()).paginate(page, per_page=per_page)
     comments = pagination.items
     return render_template('admin/manage_comment.html', comments=comments, pagination=pagination)
+
+
+@admin_bp.route('/comment/approve/<int:comment_id>')
+@login_required
+def approve_comment(comment_id):
+    comment = Comment.query.get(comment_id)
+    comment.reviewed = True
+    db.session.commit()
+    flash('Comment published.', 'success')
+    return redirect_back()
