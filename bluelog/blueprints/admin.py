@@ -1,7 +1,9 @@
-from flask import Blueprint, render_template, request, current_app
-from flask_login import login_required
-from ..forms import PostForm
-from ..models import Comment
+from flask import Blueprint, render_template, request, current_app, flash, redirect, url_for
+from flask_login import login_required, current_user
+from ..forms import PostForm, LinkForm, SettingForm, CategoryForm
+from ..models import Comment, Category, Link, Post
+from .. import db
+from ..utils import redirect_back
 
 
 
@@ -95,7 +97,7 @@ def manage_comment():
     return render_template('admin/manage_comment.html', comments=comments, pagination=pagination)
 
 
-@admin_bp.route('/comment/approve/<int:comment_id>')
+@admin_bp.route('/comment/approve/<int:comment_id>', methods=['POST'])
 @login_required
 def approve_comment(comment_id):
     comment = Comment.query.get(comment_id)
@@ -120,7 +122,7 @@ def delete_category(category_id):
 @admin_bp.route('/category/manage')
 @login_required
 def manage_category():
-    return render_tempalte('admin/manage_category.html')
+    return render_template('admin/manage_category.html')
 
 @admin_bp.route('/manage/link')
 @login_required
@@ -154,4 +156,77 @@ def delete_comment(comment_id):
     db.session.delete(comment)
     db.session.commit()
     flash('Comment deleted.', 'success')
-    return reidrect_back()
+    return redirect_back()
+
+
+@admin_bp.route('/category/new', methods=['GET', 'POST'])
+@login_required
+def new_category():
+    form = CategoryForm()
+    if form.validate_on_submit():
+        name = form.name.data
+        category = Category(name=name)
+        db.session.add(category)
+        db.session.commit()
+        flash('Category created.', 'success')
+        return redirect(url_for('.manage_category'))
+    return render_template('admin/new_category.html', form=form)
+
+
+@admin_bp.route('/link/new', methods=['GET', 'POST'])
+@login_required
+def new_link():
+    form = LinkForm()
+    if form.validate_on_submit():
+        name = form.name.data
+        url = form.url.data
+        link = Link(name=name, url=url)
+        db.session.add(link)
+        db.session.commit()
+        flash('Link created', 'success')
+        return redirect(url_for('.manage_link'))
+    return render_template('admin/new_link.html', form=form)
+
+
+@admin_bp.route('/link/edit/<int:link_id>', methods=['GET', 'POST'])
+@login_required
+def edit_link(link_id):
+    form = LinkForm()
+    link = Link.query.get_or_404(link_id)
+    if form.validate_on_submit():
+        link.name = form.name.data
+        link.url = form.url.data
+        db.session.commit()
+        flash('Link updated.', 'success')
+        return redirect(url_for('.manage_link'))
+    form.name.data = link.name
+    form.url.data = link.url
+    return render_template('admin/edit_link.html', form=form)
+
+
+@admin_bp.route('/link/delete/<int:link_id>', methods=['POST'])
+@login_required
+def delete_link(link_id):
+    link = Link.query.get_or_404(link_id)
+    db.session.delete(link)
+    db.session.commit()
+    flash('Link deleted', 'success')
+    return redirect(url_for('.manage_link'))
+
+
+@admin_bp.route('/category/edit/<int:category_id>', methods=['GET', 'POST'])
+@login_required
+def edit_category(category_id):
+    category = Category.query.get_or_404(category_id)
+    form = CategoryForm()
+    if category.id == 1:
+        flash('you can not edit the default category', 'warning')
+        return redirect(url_for('blog.index'))
+    if form.validate_on_submit():
+        category.name = form.name.data
+        db.session.commit()
+        flash('Category updated.', 'scuccess')
+        return redirect(url_for('.manage_category'))
+
+    form.name.data = category.name
+    return render_temlate('admin/edit_category.html', form=form)

@@ -1,9 +1,10 @@
-from flask import Blueprint, render_template, request, current_app, make_response
+from flask import Blueprint, render_template, request, current_app, make_response, url_for, flash, redirect
 from ..models import Post, Category, Comment
 from ..extensions import db
 from ..utils import redirect_back
 from flask_login import current_user
-from ..forms import CommentForm
+from ..forms import CommentForm, AdminCommentForm
+from ..emails import send_new_comment_email, send_new_reply_email
 
 blog_bp = Blueprint('blog', __name__)
 
@@ -43,7 +44,7 @@ def show_post(post_id):
         form.author.data = current_user.name
         form.email.data = current_app.config['BLUELOG_EMAIL']
         form.site.data = url_for('.index')
-        form_admin = True
+        from_admin = True
         reviewed = True
     else:
         form = CommentForm()
